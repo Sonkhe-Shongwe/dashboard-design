@@ -1,0 +1,10 @@
+{
+  "name": "Endurance Dark",
+  "dataColors": ["#E2EF6B", "#B7BAAD", "#9DD6E9", "#FFAD8A", "#C6AFE7", "#77C8A9"],
+  "background": "#121310",
+  "foreground": "#F4F4EC",
+  "tableAccent": "#E2EF6B",
+  "good": "#E2EF6B",
+  "neutral": "#B7BAAD",
+  "bad": "#FFAD8A"
+}

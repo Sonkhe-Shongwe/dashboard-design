@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credit Portfolio Design Study</title>
+  <style>
+    body { margin: 0; }
+    .cursor-interaction, select { cursor: pointer; }
+    #endurance-telemetry, #credit-portfolio-design { max-width: 1280px; margin-inline: auto; }
+  </style>
+</head>
+<body>
+<section id="credit-portfolio-design" aria-label="Credit Portfolio report design concept">
+  <header class="cp-header">
+    <h2>Credit Portfolio</h2>
+    <p>Freddie Mac U.S. mortgage samples · 12th scheduled payment month</p>
+  </header>
+  <div class="cp-main">
+    <div class="cp-controls">
+      <nav aria-label="Report pages">
+        <button type="button" data-page="arrears" aria-pressed="true" class="cursor-interaction">Arrears comparison</button>
+        <button type="button" data-page="coverage" aria-pressed="false" class="cursor-interaction">Cohort coverage</button>
+      </nav>
+      <div class="cp-filters">
+        <label>Year <select aria-label="Origination year" data-filter="year"><option value="">All</option><option>2022</option><option>2023</option></select></label>
+        <label>Quarter <select aria-label="Origination quarter" data-filter="quarter"><option value="">All</option><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option></select></label>
+        <button type="button" class="cp-clear cursor-interaction" data-clear><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Clear filters</button>
+      </div>
+    </div>
+    <p class="cp-sr" aria-live="polite" data-scope></p>
+    <div data-content></div>
+    <footer>Source: Freddie Mac Single-Family Loan-Level Dataset · 2022 and 2023 samples</footer>
+  </div>
+</section>
+
+<style>
+  #credit-portfolio-design { --cp-ink:#10243a; --cp-muted:#52647a; --cp-blue:#254b86; --cp-teal:#00766d; --cp-rule:#d9e2ec; --cp-canvas:#f3f6fa; --cp-white:#fff; background:var(--cp-canvas); color:var(--cp-ink); font:14px/1.4 "Segoe UI", Arial, sans-serif; font-variant-numeric:tabular-nums; }
+  #credit-portfolio-design * { box-sizing:border-box; }
+  #credit-portfolio-design h2, #credit-portfolio-design h3, #credit-portfolio-design p { margin:0; }
+  #credit-portfolio-design .cp-header { background:var(--cp-ink); color:var(--cp-white); padding:17px 24px; }
+  #credit-portfolio-design .cp-header h2 { font-size:28px; font-weight:650; letter-spacing:-.025em; }
+  #credit-portfolio-design .cp-header p { font-size:12px; color:#e1eaf3; }
+  #credit-portfolio-design .cp-main { padding:8px 24px 13px; }
+  #credit-portfolio-design .cp-controls, #credit-portfolio-design nav, #credit-portfolio-design .cp-filters { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #credit-portfolio-design .cp-controls { justify-content:space-between; border-bottom:1px solid var(--cp-rule); margin-bottom:14px; }
+  #credit-portfolio-design button, #credit-portfolio-design select { font:inherit; color:inherit; }
+  #credit-portfolio-design button { background:none; border:0; }
+  #credit-portfolio-design nav { gap:18px; }
+  #credit-portfolio-design nav button { padding:10px 0 8px; min-height:42px; border-bottom:3px solid transparent; font-size:13px; color:var(--cp-muted); }
+  #credit-portfolio-design nav button[aria-pressed=true] { border-color:var(--cp-teal); color:var(--cp-ink); font-weight:650; }
+  #credit-portfolio-design .cp-filters { gap:8px 12px; }
+  #credit-portfolio-design .cp-filters label { display:flex; align-items:center; gap:6px; font-size:12px; }
+  #credit-portfolio-design select { background:var(--cp-white); border:1px solid #8293a9; border-radius:4px; min-height:31px; padding:3px 7px; min-width:57px; }
+  #credit-portfolio-design .cp-clear { display:inline-flex; align-items:center; gap:5px; min-height:34px; padding:0 4px; color:var(--cp-teal); font-weight:600; font-size:12px; }
+  #credit-portfolio-design .cp-clear svg { width:15px; height:15px; }
+  #credit-portfolio-design .cp-kpis, #credit-portfolio-design .cp-charts { display:grid; gap:12px; }
+  #credit-portfolio-design .cp-kpis { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  #credit-portfolio-design .cp-charts { grid-template-columns:repeat(2,minmax(0,1fr)); margin:12px 0; }
+  #credit-portfolio-design .cp-charts.cp-coverage { grid-template-columns:1.18fr 1fr; }
+  #credit-portfolio-design .cp-kpi, #credit-portfolio-design .cp-chart, #credit-portfolio-design .cp-matrix { border:1px solid var(--cp-rule); background:var(--cp-white); border-radius:8px; }
+  #credit-portfolio-design .cp-kpi { padding:11px 12px; display:flex; flex-direction:column; justify-content:space-between; min-height:105px; }
+  #credit-portfolio-design .cp-kpi:first-child { background:#e9f5f2; border-color:#bdded6; }
+  #credit-portfolio-design .cp-kpi h3 { font-size:12px; color:var(--cp-muted); font-weight:600; }
+  #credit-portfolio-design .cp-kpi strong { display:block; font-size:25px; line-height:1.2; font-weight:650; letter-spacing:-.035em; }
+  #credit-portfolio-design .cp-kpi:first-child strong { font-size:31px; }
+  #credit-portfolio-design .cp-kpi p { font-size:11px; color:var(--cp-muted); }
+  #credit-portfolio-design .cp-insight { display:flex; align-items:baseline; flex-wrap:wrap; gap:2px 9px; background:#e8eef6; margin-top:12px; padding:8px 12px; border-radius:4px; font-size:12px; }
+  #credit-portfolio-design .cp-insight strong { font-weight:650; }
+  #credit-portfolio-design .cp-chart, #credit-portfolio-design .cp-matrix { padding:11px 12px; }
+  #credit-portfolio-design .cp-chart h3, #credit-portfolio-design .cp-matrix h3 { font-size:14px; font-weight:650; }
+  #credit-portfolio-design .cp-chart-head { display:flex; flex-wrap:wrap; gap:2px 12px; justify-content:space-between; align-items:center; }
+  #credit-portfolio-design .cp-legend { display:flex; gap:9px; font-size:11px; color:var(--cp-muted); }
+  #credit-portfolio-design .cp-legend span { display:flex; align-items:center; gap:4px; }
+  #credit-portfolio-design .cp-swatch { display:inline-block; height:8px; width:8px; }
+  #credit-portfolio-design .cp-y2022 { background:var(--cp-blue); }
+  #credit-portfolio-design .cp-y2023 { background:var(--cp-teal); }
+  #credit-portfolio-design .cp-plot { display:grid; grid-template-columns:42px minmax(0,1fr); grid-template-rows:117px 18px; margin-top:10px; }
+  #credit-portfolio-design .cp-axis { display:flex; flex-direction:column; justify-content:space-between; font-size:11px; color:var(--cp-muted); padding-right:5px; text-align:right; line-height:1; }
+  #credit-portfolio-design .cp-bars { display:flex; justify-content:space-around; border-bottom:1px solid #8293a9; background:repeating-linear-gradient(to bottom,var(--cp-rule) 0 1px,transparent 1px 25%); }
+  #credit-portfolio-design .cp-group { display:flex; align-items:flex-end; justify-content:center; width:23%; gap:3px; }
+  #credit-portfolio-design .cp-bar { display:block; width:30%; max-width:24px; height:var(--cp-bar-height); }
+  #credit-portfolio-design .cp-x { grid-column:2; display:flex; justify-content:space-around; text-align:center; font-size:11px; color:var(--cp-muted); padding-top:3px; }
+  #credit-portfolio-design .cp-x span { width:23%; }
+  #credit-portfolio-design table { width:100%; margin-top:5px; border-collapse:collapse; font-size:11px; }
+  #credit-portfolio-design th, #credit-portfolio-design td { padding:5px 6px; border-bottom:1px solid var(--cp-rule); text-align:right; }
+  #credit-portfolio-design th:first-child { text-align:left; }
+  #credit-portfolio-design thead { color:var(--cp-muted); }
+  #credit-portfolio-design tbody tr:last-child { background:#edf2f8; font-weight:650; }
+  #credit-portfolio-design tbody tr:last-child > * { border-bottom:0; }
+  #credit-portfolio-design footer { margin-top:8px; color:var(--cp-muted); font-size:11px; }
+  #credit-portfolio-design .cp-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  @media (max-width:650px) { #credit-portfolio-design .cp-main, #credit-portfolio-design .cp-header { padding-inline:12px; } #credit-portfolio-design .cp-controls { gap:4px; padding-bottom:8px; } #credit-portfolio-design .cp-kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } #credit-portfolio-design .cp-charts, #credit-portfolio-design .cp-charts.cp-coverage { grid-template-columns:1fr; } }
+  @media (max-width:450px) { #credit-portfolio-design .cp-kpi { padding-inline:8px; } #credit-portfolio-design th, #credit-portfolio-design td { padding-inline:3px; overflow-wrap:anywhere; } }
+  @media (pointer:coarse) { #credit-portfolio-design button, #credit-portfolio-design select { min-height:44px; } }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('credit-portfolio-design');
+    const year = root.querySelector('[data-filter=year]');
+    const quarter = root.querySelector('[data-filter=quarter]');
+    const scope = root.querySelector('[data-scope]');
+    const content = root.querySelector('[data-content]');
+    const pages = [...root.querySelectorAll('[data-page]')];
+    const years = ['2022', '2023'];
+    const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const rows = [
+      ['2022','Q1',12079,50,3383796540.97,16210621.82,389],
+      ['2022','Q2',11997,51,3529318057.95,14352882.31,453],
+      ['2022','Q3',11980,57,3566860878.63,18992235.63,466],
+      ['2022','Q4',11768,71,3419530130.36,22350911.35,690],
+      ['2023','Q1',11857,49,3519416631.02,13220277.40,586],
+      ['2023','Q2',11910,37,3723796324.27,11961134.30,554],
+      ['2023','Q3',11668,47,3455442045.45,14863575.57,804],
+      ['2023','Q4',10759,63,3106324023.22,17477672.96,1698],
+    ];
+    let page = 'arrears';
+    const number = (n, digits = 0) => n.toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
+    const percent = (n, digits) => `${number(n, digits)}%`;
+    const sum = (items, index) => items.reduce((total, item) => total + item[index], 0);
+    const summarize = items => {
+      const sampled = items.length * 12500;
+      const eligible = sum(items, 2);
+      const late = sum(items, 3);
+      const balance = sum(items, 4);
+      const lateBalance = sum(items, 5);
+      const payoff = sum(items, 6);
+      return {sampled, eligible, late, balance, lateBalance, payoff,
+        accountRate: 100 * late / eligible, principalRate: 100 * lateBalance / balance,
+        eligibleRate: 100 * eligible / sampled, payoffRate: 100 * payoff / sampled};
+    };
+    const usdM = n => `USD ${number(n / 1e6, 2)}m`;
+    const kpi = ([label, value, context]) => `<div class="cp-kpi"><h3>${label}</h3><strong>${value}</strong><p>${context}</p></div>`;
+
+    function chart(title, metric, maximum, ticks, selected) {
+      const shownYears = year.value ? [year.value] : years;
+      const shownQuarters = quarter.value ? [quarter.value] : quarters;
+      const details = selected.map(row => `${row[0]} ${row[1]} ${percent(summarize([row])[metric], 4)}`).join(', ');
+      const legend = shownYears.map(y => `<span><i class="cp-swatch cp-y${y}"></i>${y}</span>`).join('');
+      const groups = shownQuarters.map(q => {
+        const marks = shownYears.map(y => {
+          const row = selected.find(item => item[0] === y && item[1] === q);
+          const value = summarize([row])[metric];
+          return `<span class="cp-bar cp-y${y}" style="--cp-bar-height:${100 * value / maximum}%" title="${y} ${q} · ${percent(value, 4)}"></span>`;
+        }).join('');
+        return `<div class="cp-group">${marks}</div>`;
+      }).join('');
+      return `<section class="cp-chart"><div class="cp-chart-head"><h3>${title}</h3><div class="cp-legend">${legend}</div></div><div class="cp-plot" role="img" aria-label="${title}. ${details}."><div class="cp-axis">${ticks.map(t => `<span>${t}</span>`).join('')}</div><div class="cp-bars">${groups}</div><div class="cp-x">${shownQuarters.map(q => `<span>${q}</span>`).join('')}</div></div></section>`;
+    }
+
+    function matrix(selected, isArrears) {
+      const headers = isArrears ? ['Year', 'Account rate', 'Principal rate', '90+ days', 'Eligible', 'Arrears principal (USD)'] : ['Year', 'Sampled', 'Eligible', 'Voluntary payoff', 'Other exclusions'];
+      const selectedYears = years.filter(y => selected.some(row => row[0] === y));
+      const rowsWithTotals = selectedYears.map(y => [y, summarize(selected.filter(row => row[0] === y))]);
+      rowsWithTotals.push(['Total', summarize(selected)]);
+      const values = rowsWithTotals.map(([label, d]) => {
+        const columns = isArrears
+          ? [percent(d.accountRate, 4), percent(d.principalRate, 4), number(d.late), number(d.eligible), number(d.lateBalance, 2)]
+          : [number(d.sampled), number(d.eligible), number(d.payoff), number(d.sampled - d.eligible - d.payoff)];
+        return `<tr><th scope="row">${label}</th>${columns.map(c => `<td>${c}</td>`).join('')}</tr>`;
+      }).join('');
+      const title = isArrears ? 'Annual arrears and exposure' : 'Annual sample reconciliation';
+      return `<section class="cp-matrix"><h3>${title}</h3><table aria-label="${title}"><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${values}</tbody></table></section>`;
+    }
+
+    function render() {
+      const selected = rows.filter(row => (!year.value || row[0] === year.value) && (!quarter.value || row[1] === quarter.value));
+      const d = summarize(selected);
+      const isArrears = page === 'arrears';
+      const cards = isArrears ? [
+        ['Accounts 90+ days in arrears', percent(d.accountRate, 3), `${number(d.late)} of ${number(d.eligible)} eligible loans`],
+        ['Principal on arrears loans, share', percent(d.principalRate, 3), `Of USD ${number(d.balance / 1e9, 2)}bn eligible`],
+        ['Loans 90+ days in arrears', number(d.late), 'At month 12'],
+        ['Principal on arrears loans', usdM(d.lateBalance), 'Outstanding at month 12'],
+      ] : [
+        ['Month-12 eligibility', percent(d.eligibleRate, 2), `${number(d.eligible)} of ${number(d.sampled)} sampled loans`],
+        ['Voluntary payoff rate', percent(d.payoffRate, 2), `${number(d.payoff)} of ${number(d.sampled)} sampled loans`],
+        ['Eligible loans', number(d.eligible), 'Included in arrears rates'],
+        ['Sampled loans', number(d.sampled), 'Before month-12 exclusions'],
+      ];
+      const baseline = isArrears ? '2023 account arrears fell 5.45 bps vs 2022. Q4 was highest in both cohorts.' : 'Voluntary payoff reached 13.58% in 2023 Q4, compared with 5.52% in 2022 Q4.';
+      const arrearsTicks = ['0.8%','0.6%','0.4%','0.2%','0%'];
+      const charts = isArrears ? [
+        chart('Account arrears by quarter', 'accountRate', 0.8, arrearsTicks, selected),
+        chart('Principal arrears by quarter', 'principalRate', 0.8, arrearsTicks, selected),
+      ] : [
+        chart('Voluntary payoff by quarter', 'payoffRate', 16, ['16%','12%','8%','4%','0%'], selected),
+        chart('Eligibility by quarter', 'eligibleRate', 100, ['100%','75%','50%','25%','0%'], selected),
+      ];
+      scope.textContent = `${isArrears ? 'Arrears comparison' : 'Cohort coverage'}. ${year.value || 'All years'}, ${quarter.value || 'all quarters'}.`;
+      content.innerHTML = `<div class="cp-kpis">${cards.map(kpi).join('')}</div><p class="cp-insight"><strong>Full sample</strong><span>${baseline}</span></p><div class="cp-charts ${isArrears ? '' : 'cp-coverage'}">${charts.join('')}</div>${matrix(selected, isArrears)}`;
+    }
+
+    pages.forEach(button => button.addEventListener('click', () => {
+      page = button.dataset.page;
+      pages.forEach(option => option.setAttribute('aria-pressed', option === button ? 'true' : 'false'));
+      render();
+    }));
+    [year, quarter].forEach(select => select.addEventListener('change', render));
+    root.querySelector('[data-clear]').addEventListener('click', () => {
+      year.value = '';
+      quarter.value = '';
+      render();
+    });
+    render();
+  })();
+</script>
+</body>
+</html>

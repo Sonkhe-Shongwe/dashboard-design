@@ -1,0 +1,10 @@
+{
+  "name": "Portfolio Light",
+  "dataColors": ["#254B86", "#00766D", "#91541A", "#77538D", "#50657E", "#9F3434"],
+  "background": "#F3F6FA",
+  "foreground": "#10243A",
+  "tableAccent": "#00766D",
+  "good": "#00766D",
+  "neutral": "#91541A",
+  "bad": "#9F3434"
+}

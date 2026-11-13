@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Endurance Race Telemetry</title>
+  <style>
+    body { margin: 0; }
+    .cursor-interaction, select { cursor: pointer; }
+    #endurance-telemetry, #credit-portfolio-design { max-width: 1280px; margin-inline: auto; }
+  </style>
+</head>
+<body>
+<section id="endurance-telemetry" aria-label="Endurance race telemetry dashboard">
+  <header class="et-header">
+    <div class="et-brand"><span class="et-brandmark"><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span><span>ENDURANCE<span class="et-brand-light"> / ENGINEERING</span></span></div>
+    <span class="et-sample">SIMULATED TELEMETRY</span>
+  </header>
+  <div class="et-hero">
+    <div class="et-hero-copy">
+      <p class="et-overline">VEHICLE 07 <span aria-hidden="true">/</span> PROTOTYPE</p>
+      <h2>Race<br>telemetry</h2>
+      <p class="et-hero-sub">Practice session · 5.8 km circuit</p>
+    </div>
+  </div>
+  <div class="et-body">
+    <div class="et-controls">
+      <span class="et-section-label"><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg> Lap comparison</span>
+      <label for="et-lap">Selected lap</label>
+      <select id="et-lap" class="cursor-interaction"><option value="18">Lap 18</option><option value="12">Lap 12</option><option value="24">Lap 24</option></select>
+      <span class="et-reference">Reference <strong>Lap 12</strong></span>
+    </div>
+    <div class="et-kpis">
+      <div class="et-kpi et-lead"><span><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg> Lap time</span><strong id="et-time">1:44.682</strong><small id="et-delta">−0.614 s vs Lap 12</small></div>
+      <div class="et-kpi"><span><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg> Top speed</span><strong><span id="et-top">318</span> <em>km/h</em></strong><small id="et-top-delta">+6 km/h vs Lap 12</small></div>
+      <div class="et-kpi"><span><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg> Biggest sector gain</span><strong id="et-gain">Sector 2</strong><small id="et-gain-delta">−0.434 s vs Lap 12</small></div>
+    </div>
+    <div class="et-analysis">
+      <section class="et-panel et-speed" aria-labelledby="et-speed-title">
+        <div class="et-panel-head"><h3 id="et-speed-title">Speed trace</h3><div class="et-legend"><span><b class="et-solid"></b><span id="et-legend-lap">Lap 18</span></span><span id="et-legend-ref"><b class="et-dashed"></b> Lap 12</span></div></div>
+        <svg id="et-plot" role="img" aria-label="Speed by lap distance"></svg>
+      </section>
+      <section class="et-panel et-sectors" aria-labelledby="et-sectors-title">
+        <div class="et-panel-head"><h3 id="et-sectors-title">Sector times</h3><span>vs Lap 12</span></div>
+        <div class="et-sector-head" aria-hidden="true"><span>Sector</span><span>Time</span><span>Δ seconds</span></div>
+        <div id="et-sector-rows"></div>
+        <p id="et-insight" class="et-insight"><svg class="lucide" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg><span>Sector 2 accounted for 71% of the time gained.</span></p>
+      </section>
+    </div>
+    <p class="et-sr" id="et-live" aria-live="polite"></p>
+  </div>
+</section>
+
+<style>
+  #endurance-telemetry { --et-bg:#121310; --et-panel:#191b17; --et-lift:#22241b; --et-rule:#383b32; --et-text:#f4f4ec; --et-muted:#b7baad; --et-acid:#e2ef6b; --et-loss:#ffad8a; color:var(--et-text); background:var(--et-bg); font:14px/1.4 "Inter", "Segoe UI", sans-serif; font-variant-numeric:tabular-nums; }
+  #endurance-telemetry *, #endurance-telemetry *::before, #endurance-telemetry *::after { box-sizing:border-box; }
+  #endurance-telemetry h2, #endurance-telemetry h3, #endurance-telemetry p { margin:0; }
+  #endurance-telemetry .et-header { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 24px; border-bottom:1px solid var(--et-rule); }
+  #endurance-telemetry .et-brand { display:flex; align-items:center; gap:10px; font:650 12px/1.15 "IBM Plex Mono", ui-monospace, monospace; letter-spacing:.05em; }
+  #endurance-telemetry .et-brand-light { color:var(--et-muted); font-weight:400; }
+  #endurance-telemetry .et-brandmark { width:29px; height:29px; display:grid; place-items:center; background:var(--et-acid); color:var(--et-bg); border-radius:4px; }
+  #endurance-telemetry i, #endurance-telemetry .lucide { width:15px; height:15px; flex-shrink:0; }
+  #endurance-telemetry .et-sample { color:var(--et-muted); font:11px/1.15 "IBM Plex Mono", ui-monospace, monospace; letter-spacing:.055em; }
+  #endurance-telemetry .et-hero { position:relative; display:flex; align-items:center; min-height:276px; overflow:hidden; isolation:isolate; background:#20221b; border-bottom:1px solid var(--et-rule); }
+  #endurance-telemetry .et-hero::before { content:""; position:absolute; z-index:-2; inset:0; background-image:url("hero.webp"); background-size:cover; background-position:center 54%; }
+  #endurance-telemetry .et-hero::after { content:""; position:absolute; z-index:-1; inset:0; background:linear-gradient(90deg,#12140ff7 0%,#12140fd9 23%,#12140f36 61%,transparent 82%),linear-gradient(0deg,#11120da8,transparent 36%); }
+  #endurance-telemetry .et-hero-copy { padding:27px 32px 30px; }
+  #endurance-telemetry .et-overline { font:650 11px/1.3 "IBM Plex Mono", ui-monospace, monospace; color:var(--et-acid); letter-spacing:.13em; }
+  #endurance-telemetry .et-overline span { margin-inline:3px; color:var(--et-muted); }
+  #endurance-telemetry h2 { margin:8px 0 10px; color:var(--et-text); font:750 clamp(45px,8vw,83px)/.89 "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif; text-transform:uppercase; letter-spacing:-.035em; }
+  #endurance-telemetry .et-hero-sub { color:var(--et-muted); font-size:13px; }
+  #endurance-telemetry .et-body { padding:14px 24px 24px; }
+  #endurance-telemetry .et-controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; padding-bottom:13px; color:var(--et-muted); font-size:12px; }
+  #endurance-telemetry .et-section-label { display:inline-flex; align-items:center; gap:7px; color:var(--et-text); font-weight:650; margin-right:auto; font-size:14px; }
+  #endurance-telemetry .et-section-label .lucide { color:var(--et-acid); }
+  #endurance-telemetry select { min-height:33px; padding:4px 26px 4px 9px; background:var(--et-panel); border:1px solid #7f8373; color:var(--et-text); color-scheme:dark; border-radius:4px; font:inherit; }
+  #endurance-telemetry .et-reference { padding-left:11px; border-left:1px solid var(--et-rule); white-space:nowrap; }
+  #endurance-telemetry .et-reference strong { margin-left:4px; color:var(--et-text); }
+  #endurance-telemetry .et-kpis { display:grid; grid-template-columns:1.17fr 1fr 1fr; gap:1px; border:1px solid var(--et-rule); background:var(--et-rule); }
+  #endurance-telemetry .et-kpi { display:grid; align-content:start; gap:4px; min-width:0; padding:13px 15px 14px; background:var(--et-panel); }
+  #endurance-telemetry .et-kpi.et-lead { background:var(--et-lift); border-top:2px solid var(--et-acid); padding-top:11px; }
+  #endurance-telemetry .et-kpi > span { display:flex; gap:7px; align-items:center; color:var(--et-muted); font-size:12px; }
+  #endurance-telemetry .et-kpi strong { color:var(--et-text); font:650 clamp(24px,4vw,39px)/1.1 "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif; white-space:nowrap; }
+  #endurance-telemetry .et-kpi.et-lead strong { color:var(--et-acid); }
+  #endurance-telemetry .et-kpi strong em { color:var(--et-muted); font:400 12px/1.2 "IBM Plex Mono", ui-monospace, monospace; }
+  #endurance-telemetry .et-kpi small { color:var(--et-muted); font-size:11px; }
+  #endurance-telemetry .et-analysis { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(270px,1fr); gap:12px; margin-top:12px; }
+  #endurance-telemetry .et-panel { min-width:0; padding:14px 15px; background:var(--et-panel); border:1px solid var(--et-rule); }
+  #endurance-telemetry .et-panel-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:5px 8px; }
+  #endurance-telemetry .et-panel-head h3 { font-size:15px; font-weight:650; letter-spacing:-.015em; }
+  #endurance-telemetry .et-panel-head > span, #endurance-telemetry .et-legend { color:var(--et-muted); font-size:11px; }
+  #endurance-telemetry .et-legend, #endurance-telemetry .et-legend > span { display:inline-flex; align-items:center; gap:6px; }
+  #endurance-telemetry .et-legend { gap:11px; }
+  #endurance-telemetry .et-legend [hidden] { display:none; }
+  #endurance-telemetry .et-legend b { width:15px; border-top:2px solid var(--et-acid); }
+  #endurance-telemetry .et-legend .et-dashed { border-top:2px dashed var(--et-muted); }
+  #endurance-telemetry .et-speed svg { display:block; margin-top:4px; width:100%; height:179px; }
+  #endurance-telemetry .et-speed svg text { fill:var(--et-muted); font:11px/1 "IBM Plex Mono", ui-monospace, monospace; }
+  #endurance-telemetry .et-sector-head, #endurance-telemetry .et-sector { display:grid; align-items:center; grid-template-columns:1fr 1fr 1.2fr; gap:4px; padding:6px 5px; text-align:right; }
+  #endurance-telemetry .et-sector-head > :first-child, #endurance-telemetry .et-sector > :first-child { text-align:left; }
+  #endurance-telemetry .et-sector-head { margin-top:10px; color:var(--et-muted); font-size:11px; border-bottom:1px solid var(--et-rule); }
+  #endurance-telemetry .et-sector { min-height:34px; border-bottom:1px solid var(--et-rule); font:12px/1.3 "IBM Plex Mono", ui-monospace, monospace; }
+  #endurance-telemetry .et-sector[data-best=true] { background:var(--et-lift); }
+  #endurance-telemetry .et-sector [data-direction=faster] { color:var(--et-acid); }
+  #endurance-telemetry .et-sector [data-direction=slower] { color:var(--et-loss); }
+  #endurance-telemetry .et-sector-delta { display:flex; align-items:center; justify-content:flex-end; gap:5px; }
+  #endurance-telemetry .et-delta-track { display:block; position:relative; width:37px; height:12px; flex:none; background:linear-gradient(90deg,transparent calc(50% - .5px),#777b6d calc(50% - .5px),#777b6d calc(50% + .5px),transparent calc(50% + .5px)); }
+  #endurance-telemetry .et-delta-track b { position:absolute; top:4px; height:4px; width:var(--et-delta-width); background:currentColor; }
+  #endurance-telemetry [data-direction=faster] .et-delta-track b { right:50%; }
+  #endurance-telemetry [data-direction=slower] .et-delta-track b { left:50%; }
+  #endurance-telemetry .et-insight { display:flex; align-items:flex-start; gap:7px; margin-top:10px; color:var(--et-muted); font-size:11px; }
+  #endurance-telemetry .et-insight .lucide { color:var(--et-acid); }
+  #endurance-telemetry .et-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  @media(max-width:660px) { #endurance-telemetry .et-analysis { grid-template-columns:1fr; } #endurance-telemetry .et-hero { min-height:235px; } #endurance-telemetry .et-hero::before { background-position:64% center; } }
+  @media(max-width:460px) { #endurance-telemetry .et-header, #endurance-telemetry .et-body { padding-inline:12px; } #endurance-telemetry .et-hero-copy { padding-inline:15px; } #endurance-telemetry .et-hero { min-height:205px; } #endurance-telemetry .et-hero::after { background:linear-gradient(90deg,#12140ff7,#12140fae 43%,transparent 95%); } #endurance-telemetry .et-kpi { padding-inline:6px; } #endurance-telemetry .et-kpi strong { font-size:23px; } #endurance-telemetry .et-kpi strong em { font-size:11px; } #endurance-telemetry .et-kpi > span { align-items:flex-start; gap:3px; font-size:11px; min-height:31px; } #endurance-telemetry .et-kpi .lucide { width:12px; height:12px; } #endurance-telemetry .et-reference { border:0; padding-left:0; } #endurance-telemetry .et-section-label { flex-basis:100%; } #endurance-telemetry .et-panel { padding-inline:10px; } }
+  @media(pointer:coarse) { #endurance-telemetry select { min-height:44px; font-size:16px; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+
+<script>
+  (() => {
+    const root = document.getElementById('endurance-telemetry');
+    const element = id => root.querySelector(`#et-${id}`);
+    const lap = element('lap');
+    const plot = element('plot');
+    const laps = {
+      12: { sectors:[34.502,36.510,34.284], speed:[225,260,291,312,247,169,123,154,210,252,284,231,141,131,173,216,261,281,225,153,171,222,266,289,238,159,121,161,198,225] },
+      18: { sectors:[34.396,36.076,34.210], speed:[229,266,298,318,252,174,127,162,220,261,288,239,145,137,184,223,272,289,230,160,181,229,275,293,247,165,124,167,205,230] },
+      24: { sectors:[34.547,36.730,34.231], speed:[224,258,291,315,249,165,118,150,207,250,281,225,139,127,170,212,255,279,223,147,169,224,269,289,238,157,118,161,198,227] },
+    };
+    const reference = laps[12];
+    const total = values => values.reduce((sum, value) => sum + value, 0);
+    const signed = (value, digits) => `${value < 0 ? '−' : value > 0 ? '+' : ''}${Math.abs(value).toFixed(digits)}`;
+    const text = (id, value) => { element(id).textContent = value; };
+
+    function drawPlot() {
+      const selected = laps[lap.value];
+      const width = Math.round(plot.getBoundingClientRect().width);
+      if (!width) return;
+      const height = 179;
+      const margin = {left:41, right:14, top:21, bottom:34};
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+      const chartBottom = height - margin.bottom;
+      const x = ratio => margin.left + ratio * innerWidth;
+      const y = value => margin.top + (350 - value) / 250 * innerHeight;
+      const trace = points => points.map((value, index) => `${index ? 'L' : 'M'}${x(index / (points.length - 1)).toFixed(2)},${y(value).toFixed(2)}`).join(' ');
+      const speedTicks = [100,150,200,250,300,350].map(value => `<line x1="${margin.left}" y1="${y(value)}" x2="${width-margin.right}" y2="${y(value)}" stroke="var(--et-rule)"/><text x="${margin.left-7}" y="${y(value)+4}" text-anchor="end">${value}</text>`).join('');
+      const distanceTicks = (width < 410 ? [0,2,4,5.8] : [0,1,2,3,4,5,5.8]).map(value => `<text x="${x(value/5.8)}" y="${chartBottom+15}" text-anchor="middle">${value}</text>`).join('');
+      const referencePath = lap.value === '12' ? '' : `<path d="${trace(reference.speed)}" stroke="var(--et-muted)" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>`;
+      plot.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      plot.setAttribute('aria-label', `Speed in kilometres per hour by distance for Lap ${lap.value}${lap.value === '12' ? '' : ' and reference Lap 12'}. Selected lap peak ${Math.max(...selected.speed)} kilometres per hour.`);
+      plot.innerHTML = `<text x="${margin.left}" y="13">km/h</text>${speedTicks}<path d="M${margin.left} ${margin.top}V${chartBottom}H${width-margin.right}" stroke="var(--et-muted)" stroke-opacity=".54" fill="none"/>${referencePath}<path d="${trace(selected.speed)}" stroke="var(--et-acid)" stroke-width="2" stroke-linejoin="round" fill="none"/>${distanceTicks}<text x="${x(.5)}" y="${height-2}" text-anchor="middle">Lap distance (km)</text>`;
+    }
+
+    function render() {
+      const selected = laps[lap.value];
+      const seconds = total(selected.sectors);
+      const delta = seconds - total(reference.sectors);
+      const deltas = selected.sectors.map((value, index) => value - reference.sectors[index]);
+      const best = Math.min(...deltas);
+      const bestIndex = deltas.indexOf(best);
+      const peak = Math.max(...selected.speed);
+      const peakDelta = peak - Math.max(...reference.speed);
+      text('time', `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(3).padStart(6,'0')}`);
+      text('delta', `${signed(delta,3)} s vs Lap 12`);
+      text('top', peak);
+      text('top-delta', `${signed(peakDelta,0)} km/h vs Lap 12`);
+      text('gain', best < 0 ? `Sector ${bestIndex+1}` : 'Reference');
+      text('gain-delta', best < 0 ? `${signed(best,3)} s vs Lap 12` : 'Lap 12 baseline');
+      text('legend-lap', lap.value === '12' ? 'Lap 12 · reference' : `Lap ${lap.value}`);
+      element('legend-ref').hidden = lap.value === '12';
+      element('sector-rows').innerHTML = selected.sectors.map((value,index) => {
+        const diff = deltas[index];
+        const direction = diff < 0 ? 'faster' : diff > 0 ? 'slower' : 'same';
+        return `<div class="et-sector" data-best="${diff < 0 && index === bestIndex}"><span>S${index+1}</span><span>${value.toFixed(3)} s</span><strong class="et-sector-delta" data-direction="${direction}"><span class="et-delta-track" aria-hidden="true"><b style="--et-delta-width:${100*Math.abs(diff)}%"></b></span>${signed(diff,3)}</strong></div>`;
+      }).join('');
+      const slowest = Math.max(...deltas);
+      const insight = delta < 0 ? `Sector ${bestIndex+1} accounted for ${Math.round(100*best/delta)}% of the time gained.` : delta > 0 ? `Sector ${deltas.indexOf(slowest)+1} lost ${slowest.toFixed(3)} s against the reference.` : 'Lap 12 sets the comparison baseline.';
+      element('insight').querySelector('span').textContent = insight;
+      text('live', `Lap ${lap.value}. ${element('time').textContent}. ${element('delta').textContent}. ${insight}`);
+      drawPlot();
+    }
+
+    lap.addEventListener('change', render);
+    new ResizeObserver(drawPlot).observe(plot);
+    render();
+  })();
+</script>
+</body>
+</html>
